@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hirudan Bagi-bagi bansos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS STYLING (Bagian "Profesional" agar terlihat keren) --- */
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #ff00ff;
+            --neon-purple: #9d00ff;
+            --dark-bg: #0a0a12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--dark-bg);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            /* Background animated gradient */
+            background: linear-gradient(45deg, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+            max-width: 800px;
+            width: 95%;
+        }
+
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            /* Efek Teks Neon */
+            color: white;
+            text-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-purple),
+                0 0 40px var(--neon-pink);
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        p.intro {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            color: #e0e0e0;
+        }
+
+        /* Grid untuk kotak hadiah */
+        .gift-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            justify-items: center;
+        }
+
+        /* Desain Kotak Hadiah */
+        .gift-box {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.2));
+            border-radius: 15px;
+            padding: 2rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            background-clip: padding-box;
+            /* Border gradient trick */
+        }
+
+        .gift-box::before {
+            content: '';
+            position: absolute;
+            top: -3px; bottom: -3px;
+            left: -3px; right: -3px;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            z-index: -1;
+            border-radius: 15px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+
+        .gift-box:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 0 30px var(--neon-purple);
+        }
+
+        .gift-box:hover::before {
+            opacity: 1;
+            animation: rotateBorder 2s linear infinite;
+        }
+
+        .gift-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+        }
+
+        .gift-title {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: bold;
+            color: var(--neon-blue);
+        }
+
+        /* --- MODAL (POPUP) UNTUK KEJUTAN --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            border: 4px solid var(--neon-pink);
+            box-shadow: 0 0 50px var(--neon-pink);
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .reveal-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: bold;
+            color: var(--neon-pink);
+            text-shadow: 0 0 20px var(--neon-pink);
+            margin-bottom: 2rem;
+        }
+
+        .close-btn {
+            padding: 10px 30px;
+            background: var(--neon-blue);
+            border: none;
+            color: black;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: white;
+            box-shadow: 0 0 20px white;
+        }
+
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-purple),
+                0 0 40px var(--neon-pink);
+            }
+            20%, 24%, 55% {
+                text-shadow: none;
+            }
+        }
+        @keyframes rotateBorder {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>BANSOS UNTUK ZAYN'S😜</h1>
+        <p class="intro">
+            Oiii Zayn! Karena kamu teman yang baik hati (dan tidak sombong), Hirudan udah nyiapin beberapa hadiah "Secret" nih khusus buat kamu loh ya. <br> Pilih satu untuk membukanya!
+        </p>
+
+        <div class="gift-grid">
+            <div class="gift-box" onclick="openGift('TURU O! 😴')">
+                <div class="gift-icon">🎁</div>
+                <div class="gift-title">MYSTERY BOX #1</div>
+                <p>Klik untuk membuka</p>
+            </div>
+
+            <div class="gift-box" onclick="openGift('TURU O SAIKiii! 👉🛌')">
+                <div class="gift-icon">💎</div>
+                <div class="gift-title">LEGENDARY ITEM</div>
+                <p>Klik untuk membuka</p>
+            </div>
+
+            <div class="gift-box" onclick="openGift('JANGAN BEGADANG MULU, KIDDO! 😤')">
+                <div class="gift-icon">⚡</div>
+                <div class="gift-title">SECRET RARE</div>
+                <p>Klik untuk membuka</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="giftModal">
+        <div class="modal-content">
+            <h2 style="color:white; margin-bottom: 1rem;">CONGRATULATIONS! YOU GOT:</h2>
+            <div class="reveal-text" id="revealMessage"></div>
+            <button class="close-btn" onclick="closeModal()">TERIMA KASIH (Lalu Tidur)</button>
+        </div>
+    </div>
+
+
+    <script>
+        const modal = document.getElementById('giftModal');
+        const messageElement = document.getElementById('revealMessage');
+
+        // Fungsi saat kotak hadiah diklik
+        function openGift(message) {
+            // Masukkan pesan "TIDUR" ke dalam modal
+            messageElement.textContent = message;
+            // Tampilkan modal dengan menambahkan class 'active'
+            modal.classList.add('active');
+        }
+
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+    </script>
+
+</body>
+</html>
